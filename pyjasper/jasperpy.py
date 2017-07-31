@@ -156,19 +156,18 @@ class JasperPy:
 
         param_dic = {}
         tree = ET.fromstring(xmlstring)
-        for item in tree.findall(
-                'parameter'):
+        for item in tree.findall('parameter'):
+	    param_value_dic={}
             if item.get('name'):
-                param_dic.update({item.get('name'): [item.get('class')]})
+		param_value_dic.update({'class':item.get('class')})
 	    if item.get('isForPrompting'):
-        	param_dic[item.get('name')].append({'isForPrompting':[True]})
+        	param_value_dic.update({'isForPrompting':True})
 	    else:
-		param_dic[item.get('name')].append({'isForPrompting':[False]})
+		param_value_dic.update({'isForPrompting':False})
             if list(item):
 		for listItem in list(item):
-                    param_dic[item.get('name')].append({listItem.tag:[listItem.text]})
-            else:
-                param_dic[item.get('name')].append('')
+                    param_value_dic.update({listItem.tag:listItem.text})
+	    param_dic.update({item.get('name'): param_value_dic})
         return param_dic
 
     @property
