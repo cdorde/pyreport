@@ -160,8 +160,13 @@ class JasperPy:
                 'parameter'):
             if item.get('name'):
                 param_dic.update({item.get('name'): [item.get('class')]})
+	    if item.get('isForPrompting'):
+        	param_dic[item.get('name')].append({'isForPrompting':[True]})
+	    else:
+		param_dic[item.get('name')].append({'isForPrompting':[False]})
             if list(item):
-                param_dic[item.get('name')].append(list(item)[0].text)
+		for listItem in list(item):
+                    param_dic[item.get('name')].append({listItem.tag:[listItem.text]})
             else:
                 param_dic[item.get('name')].append('')
         return param_dic
